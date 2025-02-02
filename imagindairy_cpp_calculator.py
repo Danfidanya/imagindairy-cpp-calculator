@@ -31,17 +31,32 @@ st.write(f"**Total CO2 Savings per Year:** {total_co2_savings:,.2f} tons")
 st.write(f"**CO2 Savings per $1 Invested:** {co2_per_dollar:,.2f} tons")
 st.write(f"**CO2 Savings per Ton of Dairy Displaced:** {co2_per_ton:,.2f} tons")
 
-# Line Graph Visualization
-st.subheader("CO2 Savings Over Investment Amount vs 100M CPP Target")
+# Gauge Meter Visualization
+st.subheader("Progress Toward 100M CPP Goal")
 
-investment_values = np.linspace(1_000_000, 5_000_000_000, 100)  # Range from $1M to $5B
-co2_savings_values = (investment_values / investment) * total_co2_savings
+import plotly.graph_objects as go
 
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(investment_values / 1_000_000, co2_savings_values / 1_000_000_000, color='blue', linewidth=2, label="Projected CO2 Savings")
-ax.axhline(y=100, color='red', linestyle='--', label="100M CPP Target")
-ax.set_xlabel("Investment Amount ($M)")
-ax.set_ylabel("CO2 Savings (Billion Tons per Year)")
-ax.set_title("CO2 Savings Based on Investment & Production")
-ax.legend()
-st.pyplot(fig)
+target_cpp = 100_000_000  # 100M CPP Target
+progress = min(total_co2_savings / target_cpp * 100, 100)  # Limit to 100%
+
+fig = go.Figure(go.Indicator(
+    mode="gauge+number",
+    value=progress,
+    title={'text': "CPP Goal Achievement (%)"},
+    gauge={
+        'axis': {'range': [0, 100]},
+        'bar': {'color': "green"},
+        'steps': [
+            {'range': [0, 50], 'color': "red"},
+            {'range': [50, 80], 'color': "yellow"},
+            {'range': [80, 100], 'color': "green"}
+        ],
+        'threshold': {
+            'line': {'color': "black", 'width': 4},
+            'thickness': 0.75,
+            'value': 100
+        }
+    }
+))
+
+st.plotly_chart(fig)
