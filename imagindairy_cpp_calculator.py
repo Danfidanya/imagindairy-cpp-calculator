@@ -23,9 +23,10 @@ st.subheader("Results")
 st.write(f"**Total CO2 Savings per Year:** {total_co2_savings:,.2f} tons")
 st.write(f"**CO2 Savings per $1 Invested:** {co2_per_dollar:,.2f} tons")
 
-# Visualization
-fig, ax = plt.subplots()
+# Dynamic Visualization
+st.subheader("CO2 Savings Visualization")
+fig, ax = plt.subplots(figsize=(6, 4))
 ax.bar(["Total CO2 Savings"], [total_co2_savings / 1_000_000_000], color='blue')
 ax.set_ylabel("CO2 Savings (Billion Tons per Year)")
 ax.set_title("CO2 Savings Based on Investment & Production")
-st.pyplot(fig)
+st.pyplot(fig)  # Ensure the graph updates when variables change
