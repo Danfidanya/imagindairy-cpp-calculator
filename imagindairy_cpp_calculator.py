@@ -32,15 +32,16 @@ st.write(f"**CO2 Savings per $1 Invested:** {co2_per_dollar:,.2f} tons")
 st.write(f"**CO2 Savings per Ton of Dairy Displaced:** {co2_per_ton:,.2f} tons")
 
 # Line Graph Visualization
-st.subheader("CO2 Savings Over Investment Amount")
+st.subheader("CO2 Savings Over Investment Amount vs 100M CPP Target")
 
 investment_values = np.linspace(1_000_000, 5_000_000_000, 100)  # Range from $1M to $5B
 co2_savings_values = (investment_values / investment) * total_co2_savings
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(investment_values / 1_000_000, co2_savings_values / 1_000_000_000, color='blue', linewidth=2)
+ax.plot(investment_values / 1_000_000, co2_savings_values / 1_000_000_000, color='blue', linewidth=2, label="Projected CO2 Savings")
+ax.axhline(y=100, color='red', linestyle='--', label="100M CPP Target")
 ax.set_xlabel("Investment Amount ($M)")
 ax.set_ylabel("CO2 Savings (Billion Tons per Year)")
 ax.set_title("CO2 Savings Based on Investment & Production")
+ax.legend()
 st.pyplot(fig)
-
