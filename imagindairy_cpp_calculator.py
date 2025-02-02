@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import numpy as np
 
 def calculate_co2_savings(investment, production, co2_per_ton):
     total_co2_savings = production * co2_per_ton
@@ -23,10 +24,15 @@ st.subheader("Results")
 st.write(f"**Total CO2 Savings per Year:** {total_co2_savings:,.2f} tons")
 st.write(f"**CO2 Savings per $1 Invested:** {co2_per_dollar:,.2f} tons")
 
-# Dynamic Visualization
-st.subheader("CO2 Savings Visualization")
-fig, ax = plt.subplots(figsize=(6, 4))
-ax.bar(["Total CO2 Savings"], [total_co2_savings / 1_000_000_000], color='blue')
+# Line Graph Visualization
+st.subheader("CO2 Savings Over Investment Amount")
+
+investment_values = np.linspace(1_000_000, 5_000_000_000, 100)  # Range from $1M to $5B
+co2_savings_values = (investment_values / investment) * total_co2_savings
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.plot(investment_values / 1_000_000, co2_savings_values / 1_000_000_000, color='blue', linewidth=2)
+ax.set_xlabel("Investment Amount ($M)")
 ax.set_ylabel("CO2 Savings (Billion Tons per Year)")
 ax.set_title("CO2 Savings Based on Investment & Production")
-st.pyplot(fig)  # Ensure the graph updates when variables change
+st.pyplot(fig)
